@@ -3,6 +3,7 @@ body {
   padding: 0;
 }
 
-#root {
-  background-color: black;
+/* Map */
+#map {
+  height: calc(100vh - 96px);
 }
