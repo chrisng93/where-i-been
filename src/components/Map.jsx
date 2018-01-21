@@ -14,7 +14,7 @@ const MAP_PADDING = 0.4;
 // Specifies what the maximum zoom should be for the map.
 const MAX_ZOOM = 21;
 // Wait time before adjusting the zoom level again.
-const ZOOM_TIMEOUT_MS = 80;
+const ZOOM_TIMEOUT_MS = 100;
 
 export default class Map extends Component {
   constructor(props) {
@@ -37,6 +37,7 @@ export default class Map extends Component {
     this.latRad = this.latRad.bind(this);
     this.zoom = this.zoom.bind(this);
     this.pan = this.pan.bind(this);
+    this.getPanStep = this.getPanStep.bind(this);
     this.setMarkers = this.setMarkers.bind(this);
   }
 
@@ -92,7 +93,7 @@ export default class Map extends Component {
   pan(bounds) {
     let currZoom = this.map.getZoom();
     let finalZoom = this.calculateZoom(bounds);
-    const steps = this.getEqualDistancePoints(this.map.getCenter(), bounds.getCenter(), Math.abs(finalZoom - currZoom));
+    const step = this.getPanStep(this.map.getCenter(), bounds.getCenter(), Math.abs(finalZoom - currZoom));
     let index = 0;
 
     const makeStep = (zoom, index) => {
@@ -100,6 +101,7 @@ export default class Map extends Component {
       // create an illusion of smoothness.
       setTimeout(((zoom, index) => () => {
         this.map.setZoom(zoom);
+        this.map.panBy(step)
         this.map.setCenter(steps[index]);
       })(zoom, index), ZOOM_TIMEOUT_MS * (index+1));
     };
@@ -120,17 +122,12 @@ export default class Map extends Component {
     }
   }
 
-  // find straigt line from current center to new center and break up into equal segments that correspodn
-  // to the zooms
-  getEqualDistancePoints(beginning, end, numSegments) {
+  // getPanStep gets the step distance for a given beginning point, end point, and number of equal
+  // segments for the step.
+  getPanStep(beginning, end, numSegments) {
     const stepY = (end.lat() - beginning.lat()) / numSegments;
     const stepX = (end.lng() - beginning.lng()) / numSegments;
-    const steps = [];
-    steps.push(new google.maps.LatLng(beginning.lat() + stepY, beginning.lng() + stepX));
-    for (let i = 1; i < numSegments; i++) {
-      steps.push(new google.maps.LatLng(steps[i-1].lat() + stepY, steps[i-1].lng() + stepX));
-    }
-    return steps;
+    return new google.maps.LatLng(stepY,)
   }  
 
   setMarkers(previousRestaurants, nextRestaurants) {
