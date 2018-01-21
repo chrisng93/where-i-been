@@ -13,6 +13,7 @@ export default class Map extends Component {
       center: {lat: 40.727911, lng: -73.985537},
       zoom: 14,
       selectedRestaurant: null,
+      markers: {}, // Mapping of restaurant id to marker instance.
     };
     this.map = null;
     this.setMarkers = this.setMarkers.bind(this);
@@ -24,33 +25,36 @@ export default class Map extends Component {
       zoom,
       center,
     });
-    this.setMarkers(this.props.restaurants);
+    this.setMarkers([], this.props.restaurants);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.restaurants !== nextProps.restaurants) {
-      this.setMarkers(nextProps.restaurants);
+      this.setMarkers(this.props.restaurants, nextProps.restaurants);
     }
   }
 
-  setMarkers(restaurants) {
-    // TODO: Remove markers first.
-    _.each(restaurants, restaurant => {
+  setMarkers(previousRestaurants, nextRestaurants) {
+    const markers = this.state.markers;
+    const removed = _.filter(previousRestaurants, restaurant => !nextRestaurants[restaurant.id]);
+    const added = _.filter(nextRestaurants, restaurant => !previousRestaurants[restaurant.id]);
+    _.each(removed, restaurant => {
+      // TODO: Remove marker.
+      markers[restaurant.id].setMap(null);
+      delete markers[restaurant.id];
+    })
+    _.each(added, restaurant => {
       const marker = new google.maps.Marker({
         position: {lat: restaurant.lat, lng: restaurant.lng},
         map: this.map,
         animation: google.maps.Animation.DROP,
       });
-      marker.addListener('mouseover', () => {
-
-      });
-      marker.addListener('mouseout', () => {
-
-      });
       marker.addListener('click', () => {
         this.setState({selectedRestaurant: restaurant});
       });
+      markers[restaurant.id] = marker;
     });
+    this.setState({markers});
   }
 
   render() {

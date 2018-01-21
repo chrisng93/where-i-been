@@ -29,7 +29,7 @@ export default class Filter extends Component {
           {_.map(options.city, (city) =>
             <div
               key={city}
-              onClick={() => onChangeFilter({...filters, city})}
+              onClick={() => onChangeFilter({...filters, city: this.addOrRemove(filters.city, city)})}
             >
               {city}
             </div>
