@@ -18,6 +18,7 @@ export default class App extends Component {
         2: {id: 2, name: 'sushi on jones', city: 'manhattan', region: 'nyc area', type: 'japanese', summary: 'good value omakase, but rushed vibes', orderSuggestion: 'omakase', yelpURL: '', lat: 40.726670, lng: -73.992090},
         3: {id: 3, name: 'paulie gee\'s', city: 'brooklyn', region: 'nyc area', type: 'pizza', summary: 'great wood fired pizza', orderSuggestion: 'ricotta be kiddin\' me', yelpURL: '', lat: 40.729653, lng: -73.958618},
         4: {id: 4, name: 'spicy village', city: 'manhattan', region: 'nyc area', type: 'chinese', summary: 'good hand pulled noodles and chicken, but not as spicy as expected', orderSuggestion: 'big tray chicken', yelpURL: '', lat: 40.717019, lng: -73.993388},
+        5: {id: 5, name: 'urbann turbann', city: 'berkeley', region: 'bay area', type: 'indian fusion', summary: 'chiptole style indian food', orderSuggestion: 'diy', yelpURL: '', lat: 37.8752, lng: -122.2603},
       },
       filters: {
         city: [],
