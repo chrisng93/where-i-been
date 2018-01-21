@@ -12,6 +12,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // TEST DATA.
       restaurants: {
         1: {id: 1, name: 'thursday kitchen', city: 'manhattan', region: 'nyc area', type: 'korean fusion', summary: 'good place for drinks and tapas with friends', orderSuggestion: 'lychee reach rich', yelpURL: '', lat: 40.727619, lng: -73.983749},
         2: {id: 2, name: 'sushi on jones', city: 'manhattan', region: 'nyc area', type: 'japanese', summary: 'good value omakase, but rushed vibes', orderSuggestion: 'omakase', yelpURL: '', lat: 40.726670, lng: -73.992090},
@@ -32,6 +33,7 @@ export default class App extends Component {
     // TODO: Make API call to the backend to grab restaurants.
   }
 
+  // filterRestaurants filters restaurants for the map to render.
   filterRestaurants() {
     const {restaurants, filters} = this.state;
     return _.reduce(restaurants, (obj, restaurant) => {
@@ -44,18 +46,20 @@ export default class App extends Component {
     }, {});
   }
 
+  // filterOptions creates a list of options for the different types of filters
+  // (city, region, type) given the set of restaurants.
   filterOptions() {
-    return _.reduce(this.state.restaurants, (opts, restaurant) => {
-      if (!_.contains(opts.city, restaurant.city)) {
-        opts.city.push(restaurant.city);
+    return _.reduce(this.state.restaurants, (options, restaurant) => {
+      if (!_.contains(options.city, restaurant.city)) {
+        options.city.push(restaurant.city);
       }
-      if (!_.contains(opts.region, restaurant.region)) {
-        opts.region.push(restaurant.region);
+      if (!_.contains(options.region, restaurant.region)) {
+        options.region.push(restaurant.region);
       }
-      if (!_.contains(opts.type, restaurant.type)) {
-        opts.type.push(restaurant.type);
+      if (!_.contains(options.type, restaurant.type)) {
+        options.type.push(restaurant.type);
       }
-      return opts;
+      return options;
     }, {city: [], region: [], type: []});
   }
 
@@ -72,7 +76,7 @@ export default class App extends Component {
         <Filter
           filters={this.state.filters}
           options={this.filterOptions()}
-          onChangeFilter={(filters) => this.setState({filters})}
+          onChangeFilter={filters => this.setState({filters})}
         />
       </div>
     );

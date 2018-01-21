@@ -11,6 +11,8 @@ export default class Filter extends Component {
     this.renderChildren = this.renderChildren.bind(this);
   }
 
+  // addOrRemove either adds or removes a value from a list. If the list already contains the
+  // value, then it will be removed. Otherwise, it will be added.
   addOrRemove(list, value) {
     if (_.contains(list, value)) {
       return _.without(list, value);
